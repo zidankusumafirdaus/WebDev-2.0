@@ -23,10 +23,10 @@ def Register():
         email = request.form.get("email")
         password = request.form.get("password")
         if not (username and password and email):
-            return render_template("register.html", pesan = "Form Tidak Boleh Kosong.")
+            return render_template("register & otp/register.html", pesan = "Form Tidak Boleh Kosong.")
         user_terpakai = User.get(username) or User.get(email=email)
         if user_terpakai:
-            return render_template("register.html", pesan = "Username atau Email Sudah Terpakai.")
+            return render_template("register & otp/register.html", pesan = "Username atau Email Sudah Terpakai.")
         User.create(username, password, email)
         return redirect("/login")
     return render_template("register & otp/register.html")

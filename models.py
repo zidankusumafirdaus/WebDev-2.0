@@ -15,10 +15,10 @@ class User:
         interaksi = koneksi.cursor()
         if username and email:
             interaksi.execute("SELECT * FROM users WHERE username=? AND email=?", (username, email))
-        elif username:
-            interaksi.execute("SELECT * FROM users WHERE username=?", (username,))
-        elif email:
-            interaksi.execute("SELECT * FROM users WHERE email=?", (email,))
+        # elif username:
+        #     interaksi.execute("SELECT * FROM users WHERE username=?", (username,))
+        # elif email:
+        #     interaksi.execute("SELECT * FROM users WHERE email=?", (email,))
         else:
             return None
         row = interaksi.fetchone()
