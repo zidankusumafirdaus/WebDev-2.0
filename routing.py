@@ -1,7 +1,10 @@
+import smtplib
 from flask import Flask, render_template, request, redirect, session
 from models import User, create_tables
 from config import Config
 from werkzeug.security import check_password_hash
+from email.message import EmailMessage
+from otp import sendotp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -28,8 +31,15 @@ def Register():
         if user_terpakai:
             return render_template("register & otp/register.html", pesan = "Username atau Email Sudah Terpakai.")
         User.create(username, password, email)
-        return redirect("/login")
+        session['email'] = email
+        return redirect("/otp")
     return render_template("register & otp/register.html")
+
+
+
+@app.route("/otp", methods = ["GET","POST"])
+def otp():
+    return sendotp()
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
