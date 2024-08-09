@@ -10,18 +10,14 @@ def codeotp():
     return otp
 
 def sendotp():
-    email = session.get('email')
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    
-    from_mail = 'alulawak36@gmail.com'
-    server.login(from_mail, 'ixrn eriy toup kigx')
-    to_mail = email
+    server.login('alulawak36@gmail.com', 'ixrn eriy toup kigx')
         
     message = EmailMessage()
     message['Subject'] = 'OTP Verification'
-    message['From'] = from_mail
-    message['To'] = to_mail
+    message['From'] = 'alulawak36@gmail.com'
+    message['To'] = session.get('email')
     
     message.set_content("Your OTP is: " + codeotp())    
     server.send_message(message)

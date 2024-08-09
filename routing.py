@@ -1,9 +1,7 @@
-import smtplib
 from flask import Flask, render_template, request, redirect, session
 from models import User, create_tables
 from config import Config
 from werkzeug.security import check_password_hash
-from email.message import EmailMessage
 from otp import sendotp
 
 app = Flask(__name__)
