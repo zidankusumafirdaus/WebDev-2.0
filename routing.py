@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session
 from models import User, create_tables
 from config import Config
 from werkzeug.security import check_password_hash
-from otp import sendotp
+from otp import sendotp, codeotp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,7 +15,7 @@ def setup_database():
     
 @app.route("/")
 def web_application():
-    return render_template("index.html")
+    return render_template("web_application/index.html")
 
 @app.route("/register", methods = ["GET","POST"])
 def Register():
@@ -33,11 +33,23 @@ def Register():
         return redirect("/otp")
     return render_template("register & otp/register.html")
 
-
-
-@app.route("/otp", methods = ["GET","POST"])
+@app.route("/otp", methods=["GET", "POST"])
 def otp():
-    return sendotp()
+    if request.method == "POST":
+        input_otp = request.form.get("otp")
+        if input_otp == session.get('otp'):
+            return redirect("/otp_sukses")
+        else:
+            return render_template("register & otp/otp.html", pesan="Invalid cuy")
+
+    otp_code = codeotp()
+    session['otp'] = otp_code
+    sendotp(otp_code)
+    return render_template("register & otp/otp.html")
+
+@app.route("/otp_sukses")
+def otp_sukses():
+    return render_template("register & otp/otp_sukses.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -45,4 +57,3 @@ def login():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
