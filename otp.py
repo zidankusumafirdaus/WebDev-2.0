@@ -9,7 +9,7 @@ def codeotp():
         otp += str(random.randint(0,9))
     return otp
 
-def sendotp():
+def sendotp(otp_code):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login('alulawak36@gmail.com', 'ixrn eriy toup kigx')
@@ -19,6 +19,5 @@ def sendotp():
     message['From'] = 'alulawak36@gmail.com'
     message['To'] = session.get('email')
     
-    message.set_content("Your OTP is: " + codeotp())    
+    message.set_content("Your OTP is: " + otp_code)    
     server.send_message(message)
-    return render_template("register & otp/index.html")
