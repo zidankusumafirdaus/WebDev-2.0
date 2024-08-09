@@ -6,6 +6,17 @@
     <title>Login</title>
 </head>
 <body>
-    <H2>LOGIN ngab</H2>
+    <h2>Login</h2>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/login" method="post">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+        <input type="submit" value="Login">
+    </form>
+    <p>don't have an account? <a href="/register">register</a></p>
 </body>
 </html>

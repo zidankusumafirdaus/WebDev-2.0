@@ -14,7 +14,7 @@ def setup_database():
     
 @app.route("/")
 def web_application():
-    return render_template("index.html")
+    return render_template("web_application/index.html")
 
 @app.route("/register", methods = ["GET","POST"])
 def Register():
@@ -33,7 +33,21 @@ def Register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+        
+        berhasil = User.get(username) and User.get(password)
+        if berhasil :
+            return redirect("/dashboard")
+        else :
+            return render_template('register & otp/login.html', error = 'username atau password salah')
+
     return render_template("register & otp/login.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard/dash.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

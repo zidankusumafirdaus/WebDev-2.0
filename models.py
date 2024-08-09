@@ -25,6 +25,7 @@ class User:
         if row:
             return cls(*row)
         return None
+    
 
     @classmethod
     def create(cls, username, password, email):
