@@ -28,7 +28,7 @@ def Register():
         user_terpakai = User.get(username) or User.get(email=email)
         if user_terpakai:
             return render_template("register & otp/register.html", pesan = "Username atau Email Sudah Terpakai.")
-        User.create(username, password, email)
+        session['data_registrasi'] = {'username' : username, 'email' : email, 'password' : password}
         session['email'] = email
         return redirect("/otp")
     return render_template("register & otp/register.html")
