@@ -57,8 +57,9 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         
-        berhasil = User.get(username) and User.get(password)
-        if berhasil :
+        admin = username
+        member = User.get(username) and User.get(password)
+        if member :
             return redirect("/dashboard")
         else :
             return render_template('register & otp/login.html', error = 'username atau password salah')
