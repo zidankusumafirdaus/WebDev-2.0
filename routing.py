@@ -36,9 +36,13 @@ def Register():
 @app.route("/otp", methods=["GET", "POST"])
 def otp():
     if request.method == "POST":
-        input_otp = request.form.get("otp")
+        input_otp = request.form.get('otp')
         if input_otp == session.get('otp'):
-            return redirect("/otp_sukses")
+            registrasi_take = session.get('data_registrasi')
+            if registrasi_take:
+                User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
+                session.pop('data_registrasi', None)
+            return redirect('/otp_sukses')
         else:
             return render_template("register & otp/otp.html", pesan="Invalid cuy")
 
