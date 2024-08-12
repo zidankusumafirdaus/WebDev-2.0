@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from models import User, create_tables
 from config import Config
 from werkzeug.security import check_password_hash
@@ -60,18 +60,37 @@ def login():
     if request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
-        
-        berhasil = User.get(username) and User.get(password)
-        if berhasil :
-            return redirect("/dashboard")
-        else :
+
+        # Ambil akun berdasarkan username
+        akun = User.get(username=username)
+
+        if akun and check_password_hash(akun.password, password):
+            session['loggedin'] = True
+            session['username'] = akun.username
+            session['email'] = akun.email
+
+            # Tentukan level berdasarkan email atau lainnya
+            if akun.email == 'valeg29898@biowey.com':
+                session['level'] = 'admin'
+            else:
+                session['level'] = 'user'
+
+            return redirect(url_for('dash'))
+        else:
             return render_template('register & otp/login.html', error = 'username atau password salah')
+    return render_template('register & otp/login.html')
 
-    return render_template("register & otp/login.html")
+@app.route("/dash")
+def dash():
+    return render_template('dashboard/dash.html')
 
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard/dash.html")
+@app.route("/logout")
+def logout():
+    session.pop('loggedin', None)
+    session.pop('username', None)
+    session.pop('email', None)
+    session.pop('level', None)
+    return redirect(url_for('web_application'))
 
 if __name__ == "__main__":
     app.run(debug=True)
