@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
-from models import User, create_tables
+from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
@@ -23,6 +23,7 @@ def Register():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+    
         if not (username and password and email):
             return render_template("register & otp/register.html", pesan = "Form Tidak Boleh Kosong.")
         user_terpakai = User.get(username) or User.get(email=email)
@@ -33,12 +34,30 @@ def Register():
         return redirect("/otp")
     return render_template("register & otp/register.html")
 
+@app.route("/registeradmin", methods = ["GET","POST"])
+def Registeradmin():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        pw = 123
+    
+        if not (username and password and email and pw):
+            return render_template("register & otp/registeradmin.html", pesan = "Form Tidak Boleh Kosong.")
+        admin_terpakai = Admin.getadmin(username) or Admin.getadmin(email=email)
+        if admin_terpakai:
+            return render_template("register & otp/registeradmin.html", pesan = "Username atau Email Sudah Terpakai.")
+        Admin.create(username, password, email)
+        session['email'] = email
+        return redirect("/otp")
+    return render_template("register & otp/registeradmin.html")
+
 @app.route("/otp", methods=["GET", "POST"])
 def otp():
     if request.method == "POST":
         input_otp = request.form.get("otp")
         if input_otp == session.get('otp'):
-            return redirect("/otp_sukses")
+            return redirect("/dashboardadmin")
         else:
             return render_template("register & otp/otp.html", pesan="Invalid cuy")
 
@@ -69,6 +88,10 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard/dash.html")
+
+@app.route("/dashboardadmin")
+def dashboardadmin():
+    return render_template("dashboard/dashadmin.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
