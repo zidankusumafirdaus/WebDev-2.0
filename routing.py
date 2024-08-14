@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
@@ -29,7 +29,7 @@ def Register():
         user_terpakai = User.get(username) or User.get(email=email)
         if user_terpakai:
             return render_template("register & otp/register.html", pesan = "Username atau Email Sudah Terpakai.")
-        User.create(username, password, email)
+        session['data_registrasi'] = {'username' : username, 'email' : email, 'password' : password}
         session['email'] = email
         return redirect("/otp")
     return render_template("register & otp/register.html")
@@ -55,7 +55,7 @@ def Registeradmin():
 @app.route("/otp", methods=["GET", "POST"])
 def otp():
     if request.method == "POST":
-        input_otp = request.form.get("otp")
+        input_otp = request.form.get('otp')
         if input_otp == session.get('otp'):
             return redirect("/dashboardadmin")
         else:
@@ -82,12 +82,19 @@ def login():
             return redirect("/dashboard")
         else :
             return render_template('register & otp/login.html', error = 'username atau password salah')
+    return render_template('register & otp/login.html')
 
-    return render_template("register & otp/login.html")
+@app.route("/dash")
+def dash():
+    return render_template('dashboard/dash.html')
 
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard/dash.html")
+@app.route("/logout")
+def logout():
+    session.pop('loggedin', None)
+    session.pop('username', None)
+    session.pop('email', None)
+    session.pop('level', None)
+    return redirect(url_for('web_application'))
 
 @app.route("/dashboardadmin")
 def dashboardadmin():
