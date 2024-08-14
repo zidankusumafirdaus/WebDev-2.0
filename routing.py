@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, url_for
-from models import User, create_tables
+from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
@@ -23,6 +23,7 @@ def Register():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+    
         if not (username and password and email):
             return render_template("register & otp/register.html", pesan = "Form Tidak Boleh Kosong.")
         user_terpakai = User.get(username) or User.get(email=email)
@@ -33,16 +34,30 @@ def Register():
         return redirect("/otp")
     return render_template("register & otp/register.html")
 
+@app.route("/registeradmin", methods = ["GET","POST"])
+def Registeradmin():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        pw = 123
+    
+        if not (username and password and email and pw):
+            return render_template("register & otp/registeradmin.html", pesan = "Form Tidak Boleh Kosong.")
+        admin_terpakai = Admin.getadmin(username) or Admin.getadmin(email=email)
+        if admin_terpakai:
+            return render_template("register & otp/registeradmin.html", pesan = "Username atau Email Sudah Terpakai.")
+        Admin.create(username, password, email)
+        session['email'] = email
+        return redirect("/otp")
+    return render_template("register & otp/registeradmin.html")
+
 @app.route("/otp", methods=["GET", "POST"])
 def otp():
     if request.method == "POST":
         input_otp = request.form.get('otp')
         if input_otp == session.get('otp'):
-            registrasi_take = session.get('data_registrasi')
-            if registrasi_take:
-                User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
-                session.pop('data_registrasi', None)
-            return redirect('/otp_sukses')
+            return redirect("/dashboardadmin")
         else:
             return render_template("register & otp/otp.html", pesan="Invalid cuy")
 
@@ -60,23 +75,12 @@ def login():
     if request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
-
-        # Ambil akun berdasarkan username
-        akun = User.get(username=username)
-
-        if akun and check_password_hash(akun.password, password):
-            session['loggedin'] = True
-            session['username'] = akun.username
-            session['email'] = akun.email
-
-            # Tentukan level berdasarkan email atau lainnya
-            if akun.email == 'valeg29898@biowey.com':
-                session['level'] = 'admin'
-            else:
-                session['level'] = 'user'
-
-            return redirect(url_for('dash'))
-        else:
+        
+        admin = username
+        member = User.get(username) and User.get(password)
+        if member :
+            return redirect("/dashboard")
+        else :
             return render_template('register & otp/login.html', error = 'username atau password salah')
     return render_template('register & otp/login.html')
 
@@ -91,6 +95,10 @@ def logout():
     session.pop('email', None)
     session.pop('level', None)
     return redirect(url_for('web_application'))
+
+@app.route("/dashboardadmin")
+def dashboardadmin():
+    return render_template("dashboard/dashadmin.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
