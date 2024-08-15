@@ -95,19 +95,21 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        admin = username
-        member = User.get(username) and User.get(password)
-        if member:
-            return redirect("/dashboard")
+        admin = Admin.getadmin(username)
+        member = User.get(username)
+        if member and check_password_hash(member.password, password):
+            return redirect("/dash")
+        elif admin and check_password_hash(admin.password, password):
+            return redirect("/dashboardadmin")
         else:
             return render_template('register & otp/login.html', error='username atau password salah')
+        
     return render_template('register & otp/login.html')
 
 
 @app.route("/dash")
 def dash():
     return render_template('dashboard/dash.html')
-
 
 @app.route("/logout")
 def logout():
