@@ -3,16 +3,10 @@ from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
-from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['kunci'] = '123'
-bcrypt = Bcrypt(app)
-
-
-admin = []
-kunci = "123"
 
 
 @app.before_request
@@ -64,9 +58,6 @@ def Registeradmin():
             return render_template("register & otp/registeradmin.html", pesan="Kunci Tidak Boleh Kosong.")
         if kunci.lower() != app.config['kunci']:
             return render_template("register & otp/registeradmin.html", pesan="Kunci Salah.")
-        hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_admin = {'username': username, 'password': hash_password}
-        admin.append(new_admin)
         Admin.create(username, password, email)
         session['email'] = email
         Flask('Berhasil Registrasi Sebagai Admin.')
