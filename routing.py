@@ -3,10 +3,10 @@ from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
+from register import regis_admin
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['kunci'] = '123'
 
 
 @app.before_request
@@ -42,27 +42,7 @@ def Register():
 
 @app.route("/registeradmin", methods=["GET", "POST"])
 def Registeradmin():
-    if request.method == 'POST':
-        username = request.form.get("username")
-        email = request.form.get("email")
-        password = request.form.get("password")
-        kunci = request.form.get("kunci")
-
-        if not (username and password and email and kunci):
-            return render_template("register & otp/registeradmin.html", pesan="Form Tidak Boleh Kosong.")
-        admin_terpakai = Admin.getadmin(
-            username) or Admin.getadmin(email=email)
-        if admin_terpakai:
-            return render_template("register & otp/registeradmin.html", pesan="Username atau Email Sudah Terpakai.")
-        if not kunci:
-            return render_template("register & otp/registeradmin.html", pesan="Kunci Tidak Boleh Kosong.")
-        if kunci.lower() != app.config['kunci']:
-            return render_template("register & otp/registeradmin.html", pesan="Kunci Salah.")
-        Admin.create(username, password, email)
-        session['email'] = email
-        Flask('Berhasil Registrasi Sebagai Admin.')
-        return redirect("/otp")
-    return render_template("register & otp/registeradmin.html")
+    return regis_admin()
 
 
 @app.route("/otp", methods=["GET", "POST"])
@@ -71,9 +51,13 @@ def otp():
         input_otp = request.form.get('otp')
         if input_otp == session.get('otp'):
             registrasi_take = session.get('data_registrasi')
+            registrasi_admin = session.get('data_admin')
             if registrasi_take:
                 User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
                 session.pop('data_registrasi', None)
+            if registrasi_admin:
+                Admin.create(username = registrasi_admin['username'], password = registrasi_admin['password'], email = registrasi_admin['email'])
+                session.pop('data_admin', None)
             return redirect('/otp_sukses')
         else:
             return render_template("register & otp/otp.html", pesan="Invalid cuy")
