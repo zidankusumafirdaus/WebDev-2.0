@@ -43,9 +43,6 @@
         </div>
         <form action="/login" method="post">
           <h2 class="form__title">Login</h2>
-          {% if error %}
-          <p class="error-message">{{ error }}</p>
-          {% endif %}
           <label for="username" class="form-control__label">Username</label>
           <input
             type="text"
@@ -62,6 +59,9 @@
             class="form-control"
             required
           />
+          {% if error %}
+          <p class="error-message">{{ error }}</p>
+          {% endif %}
           <input type="submit" value="Login" class="form__submit" />
         </form>
         <p class="form__footer">
