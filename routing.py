@@ -74,7 +74,7 @@ def otp():
             if registrasi_take:
                 User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
                 session.pop('data_registrasi', None)
-            return redirect('/otp_sukses')
+            return redirect('/login')
         else:
             return render_template("register & otp/otp.html", pesan="Invalid cuy")
 
