@@ -18,7 +18,7 @@ def setup_database():
 
 @app.route("/")
 def web_application():
-    return render_template("web_application/index.html")
+    return render_template("web_application.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -29,15 +29,15 @@ def Register():
         password = request.form.get("password")
 
         if not (username and password and email):
-            return render_template("register & otp/register.html", pesan="Form Tidak Boleh Kosong.")
+            return render_template("register.html", pesan="Form Tidak Boleh Kosong.")
         user_terpakai = User.get(username) or User.get(email=email)
         if user_terpakai:
-            return render_template("register & otp/register.html", pesan="Username atau Email Sudah Terpakai.")
+            return render_template("register.html", pesan="Username atau Email Sudah Terpakai.")
         session['data_registrasi'] = {
             'username': username, 'email': email, 'password': password}
         session['email'] = email
         return redirect("/otp")
-    return render_template("register & otp/register.html")
+    return render_template("register.html")
 
 
 @app.route("/registeradmin", methods=["GET", "POST"])
@@ -58,19 +58,19 @@ def otp():
             if registrasi_admin:
                 Admin.create(username = registrasi_admin['username'], password = registrasi_admin['password'], email = registrasi_admin['email'])
                 session.pop('data_admin', None)
-            return redirect('/otp_sukses')
+            return redirect('/dash')
         else:
-            return render_template("register & otp/otp.html", pesan="Invalid cuy")
+            return render_template("otp.html", pesan="Invalid cuy")
 
     otp_code = codeotp()
     session['otp'] = otp_code
     sendotp(otp_code)
-    return render_template("register & otp/otp.html")
+    return render_template("otp.html")
 
 
 @app.route("/otp_sukses")
 def otp_sukses():
-    return render_template("register & otp/otp_sukses.html")
+    return render_template("otp_sukses.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -86,14 +86,14 @@ def login():
         elif admin and check_password_hash(admin.password, password):
             return redirect("/dashboardadmin")
         else:
-            return render_template('register & otp/login.html', error='username atau password salah')
+            return render_template('login.html', error='username atau password salah')
         
-    return render_template('register & otp/login.html')
+    return render_template('login.html')
 
 
 @app.route("/dash")
 def dash():
-    return render_template('dashboard/dash.html')
+    return render_template('dash.html')
 
 @app.route("/logout")
 def logout():
@@ -106,7 +106,7 @@ def logout():
 
 @app.route("/dashboardadmin")
 def dashboardadmin():
-    return render_template("dashboard/dashadmin.html")
+    return render_template("dashadmin.html")
 
 
 if __name__ == "__main__":
