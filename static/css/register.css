@@ -207,7 +207,7 @@ input:checked + .custom__checkbox svg {
 
 a {
   font-size: 14px;
-  color: yellow;
+  color: #0875e4;
   font-weight: 500;
   text-decoration: none;
 }
