@@ -7,10 +7,12 @@ from register import regis_admin
 import qrcode
 from io import BytesIO
 from base64 import b64encode
+from flask_socketio import SocketIO, send
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.before_request
 def setup_database():
@@ -85,15 +87,17 @@ def login():
         admin = Admin.getadmin(username)
         member = User.get(username)
         if member and check_password_hash(member.password, password):
+            session['loggedin'] = True
+            session['username'] = username  
             return redirect("/dash")
         elif admin and check_password_hash(admin.password, password):
+            session['loggedin'] = True
+            session['username'] = username 
             return redirect("/dashboardadmin")
         else:
             return render_template('login.html', error='username atau password salah')
         
     return render_template('login.html')
-
-
 @app.route("/dash")
 def dash():
     return render_template('dash.html')
@@ -127,6 +131,17 @@ def generateQR():
     
     return render_template('barcode/barcode.html', data=base64_img)
 
+@socketio.on('message')
+def handle_message(message):
+    print("Menerima pesan: " + message)
+    if message != "User terhubung!":
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        send(f"{timestamp} - {message}", broadcast=True)
+
+@app.route('/chat')
+def chat():
+    username = session.get('username')
+    return render_template('chat.html', username=username)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
