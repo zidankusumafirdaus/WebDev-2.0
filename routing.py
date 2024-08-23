@@ -3,13 +3,10 @@ from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
-<<<<<<< HEAD
 import qrcode
 from io import BytesIO
 from base64 import b64encode
-=======
 from register import regis_admin
->>>>>>> main
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -61,14 +58,7 @@ def otp():
             if registrasi_take:
                 User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
                 session.pop('data_registrasi', None)
-<<<<<<< HEAD
             return redirect('/login')
-=======
-            if registrasi_admin:
-                Admin.create(username = registrasi_admin['username'], password = registrasi_admin['password'], email = registrasi_admin['email'])
-                session.pop('data_admin', None)
-            return redirect('/dash')
->>>>>>> main
         else:
             return render_template("otp.html", pesan="Invalid cuy")
 
