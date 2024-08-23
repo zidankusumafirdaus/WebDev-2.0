@@ -3,9 +3,6 @@ from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
-import qrcode
-from io import BytesIO
-from base64 import b64encode
 from register import regis_admin
 
 app = Flask(__name__)
@@ -58,7 +55,10 @@ def otp():
             if registrasi_take:
                 User.create(username = registrasi_take['username'], password = registrasi_take['password'], email = registrasi_take['email'])
                 session.pop('data_registrasi', None)
-            return redirect('/login')
+            if registrasi_admin:
+                Admin.create(username = registrasi_admin['username'], password = registrasi_admin['password'], email = registrasi_admin['email'])
+                session.pop('data_admin', None)
+            return redirect('/dash')
         else:
             return render_template("otp.html", pesan="Invalid cuy")
 
@@ -108,21 +108,6 @@ def logout():
 def dashboardadmin():
     return render_template("dashadmin.html")
 
-@app.route('/barcode')
-def barcode():
-    return render_template('barcode/barcode.html')
-
-@app.route('/generateQR', methods=['POST'])
-def generateQR():
-    memory = BytesIO()
-    data = request.form.get('link')
-    img = qrcode.make(data)
-    img.save(memory)
-    memory.seek(0)
-    
-    base64_img = "data:image/png;base64," + b64encode(memory.getvalue()).decode('ascii')
-    
-    return render_template('barcode/barcode.html', data=base64_img)
 
 if __name__ == "__main__":
     app.run(debug=True)
