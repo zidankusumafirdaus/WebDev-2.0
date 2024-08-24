@@ -41,6 +41,8 @@ def Register():
         session['data_registrasi'] = {
             'username': username, 'email': email, 'password': password}
         session['email'] = email
+        session['username'] = username
+        
         return redirect("/otp")
     return render_template("register.html")
 
@@ -92,7 +94,7 @@ def login():
             return redirect("/dash")
         elif admin and check_password_hash(admin.password, password):
             session['loggedin'] = True
-            session['username'] = username 
+            session['username'] = username
             return redirect("/dashboardadmin")
         else:
             return render_template('login.html', error='username atau password salah')
