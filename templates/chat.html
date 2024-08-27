@@ -13,7 +13,7 @@
       $(document).ready(function () {
         var socket = io.connect("http://localhost:5000");
         socket.on("connect", function () {
-          socket.send("User terhubung!");
+          socket.emit("join", { username: "{{ username }}", room: "room1" });
         });
 
         socket.on("message", function (data) {
@@ -24,10 +24,17 @@
           socket.send("{{ username }}: " + $("#message").val());
           $("#message").val("");
         });
+
+        $("#leaveBtn").on("click", function () {
+          socket.emit("leave", { username: "{{ username }}", room: "room1" });
+          socket.disconnect();
+          window.location.href = "{{ url_for('dash') }}";
+        });
       });
     </script>
     <div id="messages"></div>
     <input type="text" id="message" placeholder="Message" required />
     <button id="sendBtn">Kirim</button>
+    <button id="leaveBtn">Keluar</button>
   </body>
 </html>
