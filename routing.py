@@ -127,11 +127,15 @@ def generateQR():
     return generate_qr()
 
 @socketio.on('message')
-def handle_message(message):
-    print("Menerima pesan: " + message)
-    if message != "User terhubung!":
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        send(f"{timestamp} - {message}", broadcast=True)
+def handle_message(data):
+    print(f"Menerima pesan dari {data['username']}: {data['message']}")
+    if data['message'] != "User terhubung!":
+        timestamp = datetime.now().strftime("%H:%M")
+        send({
+            'timestamp': timestamp,
+            'username': data['username'],
+            'text': data['message']
+        }, broadcast=True)
 
 @app.route('/chat')
 def chat():
