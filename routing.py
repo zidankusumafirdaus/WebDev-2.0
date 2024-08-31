@@ -9,6 +9,7 @@ from io import BytesIO
 from base64 import b64encode
 from flask_socketio import SocketIO, send, join_room, leave_room
 from datetime import datetime
+from qr import generate_qr
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -123,15 +124,7 @@ def barcode():
 
 @app.route('/generateQR', methods=['POST'])
 def generateQR():
-    memory = BytesIO()
-    data = request.form.get('link')
-    img = qrcode.make(data)
-    img.save(memory)
-    memory.seek(0)
-    
-    base64_img = "data:image/png;base64," + b64encode(memory.getvalue()).decode('ascii')
-    
-    return render_template('barcode/barcode.html', data=base64_img)
+    return generate_qr()
 
 @socketio.on('message')
 def handle_message(message):
