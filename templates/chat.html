@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Desktop Chat Application</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  </head>
-  <body>
-    <h2>Halo bang, {{ username }}!</h2>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="user-info">
+                <h2>{{ username }}</h2>
+            </div>
+            <div class="room-list">
+                <div class="room-item">User 1</div>
+                <div class="room-item">User 2</div>
+                <div class="room-item">User 3</div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="chat-header">
+                <h2>User 1</h2>
+                <button id="leaveBtn">Keluar</button>
+            </div>
+            <div id="messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="message" placeholder="Ketik pesan.." required />
+                <button id="sendBtn">Kirim</button>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
-      $(document).ready(function () {
-        var socket = io.connect("http://localhost:5000");
-        socket.on("connect", function () {
-          socket.emit("join", { username: "{{ username }}", room: "room1" });
-        });
-
-        socket.on("message", function (data) {
-          $("#messages").append($("<p>").text(data));
-        });
-
-        $("#sendBtn").on("click", function () {
-          socket.send("{{ username }}: " + $("#message").val());
-          $("#message").val("");
-        });
-
-        $("#leaveBtn").on("click", function () {
-          socket.emit("leave", { username: "{{ username }}", room: "room1" });
-          socket.disconnect();
-          window.location.href = "{{ url_for('dash') }}";
-        });
-      });
+        var username = "{{ username }}";
     </script>
-    <div id="messages"></div>
-    <input type="text" id="message" placeholder="Message" required />
-    <button id="sendBtn">Kirim</button>
-    <button id="leaveBtn">Keluar</button>
-  </body>
+    <script id="config"  data-username="{{ username }}" url="{{ url_for('dash') }}"></script>
+</body>
 </html>
