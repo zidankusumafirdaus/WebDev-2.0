@@ -74,23 +74,20 @@ class Admin:
 def create_tables():
     koneksi = sqlite3.connect(Config.DATABASE)
     interaksi = koneksi.cursor()
+
     interaksi.execute("""CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT,
                 password TEXT,
                 email TEXT
                 )""")
-    koneksi.commit()
-    koneksi.close()
 
-def create_tables():
-    koneksi = sqlite3.connect(Config.DATABASE)
-    interaksi = koneksi.cursor()
     interaksi.execute("""CREATE TABLE IF NOT EXISTS admin (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT,
                 password TEXT,
                 email TEXT
                 )""")
+
     koneksi.commit()
     koneksi.close()
