@@ -11,10 +11,10 @@
     <ul>
       {% for item in items %}
       <li>
-        <strong>{{ item.name }}</strong>: {{ item.description }}
-        <a href="/edit/{{ item.id }}">Edit</a>
+        <strong>{{ item[1] }}</strong>: {{ item[2] }}
+        <a href="/edit/{{ item[0] }}">Edit</a>
         <form
-          action="/delete/{{ item.id }}"
+          action="/delete/{{ item[0] }}"
           method="post"
           style="display: inline"
         >

@@ -1,56 +1,75 @@
+import sqlite3
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crud.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# Fungsi untuk menginisialisasi database
+def init_db():
+    conn = sqlite3.connect('crud.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
-# Model Database
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200), nullable=True)
-
-# Route Home
+# Route untuk menampilkan data (READ)
 @app.route('/')
 def index():
-    items = Item.query.all()
+    conn = sqlite3.connect('crud.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM items')
+    items = cursor.fetchall()
+    conn.close()
     return render_template('crud1.html', items=items)
 
-# Route Tambah Data
+# Route untuk menambah data (CREATE)
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
-        new_item = Item(name=name, description=description)
-        db.session.add(new_item)
-        db.session.commit()
+        conn = sqlite3.connect('crud.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO items (name, description) VALUES (?, ?)', (name, description))
+        conn.commit()
+        conn.close()
         return redirect(url_for('index'))
     return render_template('crud2.html')
 
-# Route Edit Data
+# Route untuk mengubah data (UPDATE)
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    item = Item.query.get_or_404(id)
+    conn = sqlite3.connect('crud.db')
+    cursor = conn.cursor()
+
     if request.method == 'POST':
-        item.name = request.form['name']
-        item.description = request.form['description']
-        db.session.commit()
+        name = request.form['name']
+        description = request.form['description']
+        cursor.execute('UPDATE items SET name = ?, description = ? WHERE id = ?', (name, description, id))
+        conn.commit()
+        conn.close()
         return redirect(url_for('index'))
+
+    cursor.execute('SELECT * FROM items WHERE id = ?', (id,))
+    item = cursor.fetchone()
+    conn.close()
     return render_template('crud3.html', item=item)
 
-# Route Hapus Data
+# Route untuk menghapus data (DELETE)
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
-    item = Item.query.get_or_404(id)
-    db.session.delete(item)
-    db.session.commit()
+    conn = sqlite3.connect('crud.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM items WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+    init_db()  # Inisialisasi database saat aplikasi dijalankan
     app.run(debug=True)
