@@ -5,6 +5,7 @@ from apps.superuser.superuser import superuser_bp
 from apps.admin.admin import admin_bp
 from apps.user.user import user_bp
 from apps.erorhandlers.erorhandlers import error_bp
+from apps.qr.qr import qr
 import models
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.register_blueprint(superuser_bp, url_prefix="/superuser")
 app.register_blueprint(admin_bp, url_prefix="/admin")
 app.register_blueprint(user_bp, url_prefix="/user")
 app.register_blueprint(error_bp)
+app.register_blueprint(qr, url_prefix="/qr")
 
 if __name__ == '__main__':
     models.create_tables()
