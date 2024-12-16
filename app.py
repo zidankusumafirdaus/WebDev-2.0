@@ -8,7 +8,7 @@ from apps.erorhandlers.erorhandlers import error_bp
 import models
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'SECRET_KEY'
 
 app.register_blueprint(register_bp, url_prefix="/register")
 app.register_blueprint(login_bp, url_prefix="/login")
