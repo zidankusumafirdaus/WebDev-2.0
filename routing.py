@@ -3,6 +3,7 @@ from models import User, create_tables, Admin
 from config import Config
 from werkzeug.security import check_password_hash
 from otp import sendotp, codeotp
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -99,6 +100,27 @@ def logout():
 @app.route("/dashboardadmin")
 def dashboardadmin():
     return render_template("dashboard/dashadmin.html")
+
+
+# List untuk menyimpan jejak pengguna
+visitor_logs = ['sample.log']
+
+@app.route("/log")
+def index():
+    # Mendapatkan informasi pengguna
+    ip_address = request.remote_addr
+    user_agent = request.headers.get('User-Agent')
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Simpan jejak pengguna ke log
+    visitor_logs.append({
+        'ip': ip_address,
+        'user_agent': user_agent,
+        'timestamp': timestamp
+    })
+
+    # Kirim log ke template untuk ditampilkan
+    return render_template("log analisis/log.html", logs=visitor_logs)
 
 if __name__ == "__main__":
     app.run(debug=True)
