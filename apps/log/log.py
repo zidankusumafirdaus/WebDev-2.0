@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, Blueprint
 from datetime import datetime
 
-
+log = Blueprint("log", __name__, static_folder="static", template_folder="templates")
 
 visitor_logs = ['sample.log']
 
+@log.route('/log')
 def index():
     ip_address = request.remote_addr
     user_agent = request.headers.get('User-Agent')
@@ -18,4 +19,4 @@ def index():
     })
 
 
-    return render_template("log analisis/log.html", logs=visitor_logs)
+    return render_template("log.html", logs=visitor_logs)

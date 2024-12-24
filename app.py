@@ -6,6 +6,7 @@ from apps.admin.admin import admin_bp
 from apps.user.user import user_bp
 from apps.erorhandlers.erorhandlers import error_bp
 from apps.qr.qr import qr
+from apps.log.log import log
 import models
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ app.register_blueprint(admin_bp, url_prefix="/admin")
 app.register_blueprint(user_bp, url_prefix="/user")
 app.register_blueprint(error_bp)
 app.register_blueprint(qr, url_prefix="/qr")
+app.register_blueprint(log, url_prefix="/log")
 
 if __name__ == '__main__':
     models.create_tables()
