@@ -1,0 +1,238 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", Helvetica, sans-serif;
+  display: flex;
+  margin: 80%;
+}
+
+header h1 {
+  font-family: "Inter", Helvetica, sans-serif;
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.MainButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  max-width: 93%;
+  display: flex;
+}
+
+/*background*/
+section {
+  margin: 20px 0;
+  padding: 20px;
+  background: #09090b;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  margin: -5rem 1rem;
+}
+
+button {
+  background-color: #09090b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.generated {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative; /* Tetap */
+}
+
+.generated img {
+  margin-top: -4.9rem;
+  width: 18.5rem;
+  height: 18.5rem;
+}
+
+.qr-code {
+  width: 296px;
+  height: 296px;
+  background-color: #ddd;
+  z-index: 1;
+  position: relative;
+  margin-top: -4.9rem;
+}
+
+.QR {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.link-section {
+  display: flex;
+  justify-content: center;
+}
+
+.formLink {
+  display: flex;
+  justify-content: center;
+  margin-top: -8rem;
+  margin-left: -5.7rem;
+  max-width: 80rem;
+}
+
+.link {
+  margin-right: 1rem;
+  width: 50rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.buttonLink {
+  margin-top: 1rem;
+  width: 10rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #be3838;
+}
+
+.formwa {
+  display: flex;
+  justify-content: center;
+  margin-top: -8.5rem;
+  margin-left: -5.7rem;
+  max-width: 80rem;
+  flex-wrap: wrap;
+}
+
+.whatsapp-section {
+  display: flex;
+  justify-content: center;
+}
+
+.CountrySelect {
+  width: 17.5rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 1rem 1rem 10px 0;
+  display: flex;
+}
+
+.WANumber {
+  width: 42.5rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.WAText {
+  margin-right: 1rem;
+  width: 50rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.buttonWA {
+  margin-top: 1rem;
+  width: 10rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #be3838;
+}
+
+.formGmail {
+  display: flex;
+  justify-content: center;
+  margin-top: -5rem;
+  margin-left: -5.7rem;
+  max-width: 62rem;
+  flex-wrap: wrap;
+}
+
+.GmailAddress {
+  width: 20rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 1rem 1.2rem 10px 0;
+}
+
+.GmailSubject {
+  width: 40rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.GmailText {
+  margin-right: 1rem;
+  width: 50rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.buttonGmail {
+  margin-top: 1rem;
+  width: 10rem;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #be3838;
+}
