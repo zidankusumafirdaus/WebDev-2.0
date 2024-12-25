@@ -1,10 +1,11 @@
 import os
 import json
 import qrcode
-import hashlib
-from flask import Flask, request, render_template, Blueprint, send_from_directory
+from flask_bcrypt import Bcrypt
+from flask import request, render_template, Blueprint, send_from_directory
 
 qr = Blueprint("qr", __name__, static_folder="static", template_folder="templates")
+bcrypt = Bcrypt()
 
 FolderUploads = './apps/qr/uploads'
 os.makedirs(FolderUploads, exist_ok=True)
@@ -17,7 +18,7 @@ def barcode():
             link = request.form['link']
             QRGenerate = qrcode.make(link)
             
-            safe_link = hashlib.md5(link.encode()).hexdigest() 
+            safe_link = bcrypt.generate_password_hash(link.encode()).decode('utf-8') 
             qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
             QRGenerate.save(qrSave)
             return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
@@ -31,7 +32,7 @@ def barcode():
             WhatsAppURL = f"https://wa.me/{country_code}{WANumber}?text={WAMessage}"
             QRGenerate = qrcode.make(WhatsAppURL)
             
-            safe_link = hashlib.md5(WhatsAppURL.encode()).hexdigest()
+            safe_link = bcrypt.generate_password_hash(WhatsAppURL.encode()).decode('utf-8') 
             qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
             QRGenerate.save(qrSave)
             return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
@@ -45,7 +46,7 @@ def barcode():
             GmailURL = f"MATMSG:TO:{GmailAddress};SUB:{GmailSubject};BODY:{GmailText}"
             QRGenerate = qrcode.make(GmailURL)
 
-            safe_link = hashlib.md5(GmailURL.encode()).hexdigest()
+            safe_link = bcrypt.generate_password_hash(GmailURL.encode()).decode('utf-8')
             qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
             QRGenerate.save(qrSave)
             return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
