@@ -1,0 +1,84 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e9ecef;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: #f4f4f4;
+  margin: 20px;
+}
+
+td {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #999;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+}
+
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+  background-color: transparent;
+  outline: none;
+}
+
+input[type="text"] {
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="number"]:focus {
+  background-color: #dbe6f2;
+}
+
+/* Bold borders for 3x3 grid areas */
+tr:nth-child(3n + 1) td {
+  border-top: 3px solid #000;
+}
+
+td:nth-child(3n + 1) {
+  border-left: 3px solid #000;
+}
+
+td:nth-child(3n) {
+  border-right: 3px solid #000;
+}
+
+tr:nth-last-child(1) td {
+  border-bottom: 3px solid #000;
+}
+
+/* Button styling */
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
