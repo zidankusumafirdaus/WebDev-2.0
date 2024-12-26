@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('sudoku.static', filename='css/sudoku.css') }}"
+    />
+    <title>Sudoku Game</title>
+  </head>
+  <body>
+    <h1>Sudoku Game</h1>
+    <div id="timer">00:00</div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div id="messages">
+      {% for category, message in messages %}
+      <div class="{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+
+    <form method="POST" onsubmit="handleFormSubmit(event)">
+      <input type="hidden" name="time_taken" id="time_taken" value="0" />
+      <table>
+        {% for i in range(9) %}
+        <tr>
+          {% for j in range(9) %}
+          <td>
+            {% set cell = sudoku_board[i][j] %} {% if cell == 0 %}
+            <input type="number" name="cell-{{i}}-{{j}}" min="1" max="9" />
+            {% else %}
+            <input type="text" value="{{ cell }}" readonly />
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+      <button type="submit" name="action" value="submit">Submit</button>
+      <button
+        type="submit"
+        name="action"
+        value="new_game"
+        onclick="handleNewGame()"
+      >
+        New Game
+      </button>
+      <button type="submit" name="action" value="solve" onclick="stopTimer()">
+        Solve
+      </button>
+    </form>
+    <script src="{{ url_for('sudoku.static', filename='js/sudoku.js') }}"></script>
+  </body>
+</html>
