@@ -5,6 +5,7 @@ from apps.superuser.superuser import superuser_bp
 from apps.admin.admin import admin_bp
 from apps.user.user import user_bp
 from apps.erorhandlers.erorhandlers import error_bp
+from apps.sudoku.sudoku import sudoku_bp
 from apps.qr.qr import qr
 from apps.log.log import log
 import models
@@ -20,6 +21,7 @@ app.register_blueprint(user_bp, url_prefix="/user")
 app.register_blueprint(error_bp)
 app.register_blueprint(qr, url_prefix="/qr")
 app.register_blueprint(log, url_prefix="/log")
+app.register_blueprint(sudoku_bp, url_prefix="/sudoku")
 
 if __name__ == '__main__':
     models.create_tables()
