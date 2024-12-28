@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session, url_for
 from models import User
 from werkzeug.security import check_password_hash
 from models import User
@@ -20,11 +20,11 @@ def login():
 
             
             if member.role == 'superuser':
-                return redirect("/dashboardsuper")
+                return redirect(url_for("superuser.dashboardsuper"))
             elif member.role == 'admin':
-                return redirect("/dashadmin")
+                return redirect(url_for("admin.dashadmin"))
             elif member.role == 'user':
-                return redirect("/dash")
+                return redirect(url_for("user.dash"))
 
         return render_template("login.html", error="Username atau password salah")
     return render_template("login.html")
