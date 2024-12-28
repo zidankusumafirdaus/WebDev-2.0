@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="{{ url_for('otp.static', filename='css/otp.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="{{ url_for('otp.verify_otp') }}" id="otp-form">
+            <label for="otp">Masukkan Kode OTP</label>
+            <div class="otp-container">
+                <input type="number" class="otp-input" maxlength="1" required>
+                <input type="number" class="otp-input" maxlength="1" required>
+                <input type="number" class="otp-input" maxlength="1" required>
+                <input type="number" class="otp-input" maxlength="1" required>
+                <input type="number" class="otp-input" maxlength="1" required>
+                <input type="number" class="otp-input" maxlength="1" required>
+            </div>
+            <input type="hidden" name="otp" id="full-otp">
+            <button type="submit">Verifikasi</button>
+            {% if pesan %}
+            <p>{{ pesan }}</p>
+            {% endif %}
+        </form>
+    </div>
+    <script src="{{ url_for('otp.static', filename='js/otp.js') }}"></script>
+</body>
+</html>
