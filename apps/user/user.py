@@ -5,7 +5,7 @@ user_bp = Blueprint('userlog', __name__, template_folder='templates', static_fol
 
 @user_bp.route("/dash")
 @login_required
-@role_required('user','admin','superadmin') #penentu role
+@role_required('user','admin','superuser') #penentu role
 def dashboardsuper():
     return render_template("dash.html")
 
