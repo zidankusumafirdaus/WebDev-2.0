@@ -6,7 +6,7 @@ admin_bp = Blueprint('admin', __name__, template_folder='templates', static_fold
 @admin_bp.route("/dashadmin")
 @login_required
 @role_required('admin','superadmin') #penentu role
-def dashadmin():
+def dashboardsuper():
     return render_template("dashadmin.html")
 
 # Ndisor iki tambah ono fitur gwe dashboard e admin
