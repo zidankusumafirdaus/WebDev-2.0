@@ -24,7 +24,7 @@ app.register_blueprint(error_bp)
 app.register_blueprint(qr, url_prefix="/qr")
 app.register_blueprint(log, url_prefix="/log")
 app.register_blueprint(otp_bp, url_prefix="/otp")
-app.register_blueprint(sudoku_bp, user_prefix="/sudoku" )
+app.register_blueprint(sudoku_bp, url_prefix="/sudoku" )
 
 if __name__ == '__main__':
     models.create_tables()
