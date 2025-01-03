@@ -33,7 +33,7 @@
           <div class="menu">
             <p class="title">Main</p>
             <!-- Tombol Logout -->
-            <a href="{{ url_for('superuser.superuser_logout') }}">Logout</a>
+            <!-- <a href="{{ url_for('superuser.superuser_logout') }}">Logout</a> -->
             <!--  -->
             <ul>
               <li class="active">
@@ -81,23 +81,23 @@
                 </a>
                 <ul class="sub-menu">
                   <li>
-                    <a href="#">
-                      <span class="text">Earning</span>
+                    <a href="{{ url_for('sudoku.sudoku') }}">
+                      <span class="text">Sudoku</span>
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <span class="text">Funds</span>
+                      <span class="text">FlippyBird</span>
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <span class="text">Decline</span>
+                      <span class="text">FF</span>
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <span class="text">Payout</span>
+                      <span class="text">ML</span>
                     </a>
                   </li>
                 </ul>
@@ -126,7 +126,7 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="{{ url_for('superuser.superuser_logout') }}">
                 <i class="icon ph-bold ph-sign-out"></i>
                 <span class="text">Logout</span>
               </a>
