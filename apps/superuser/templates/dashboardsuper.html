@@ -9,7 +9,7 @@
     <!-- STYLESHEET -->
     <link
       rel="stylesheet"
-      href="{{ url_for('user.static', filename='css/superuser.css') }}"
+      href="{{ url_for('superuser.static', filename='css/superuser.css') }}"
     />
 
     <title>Sidebar</title>
@@ -32,6 +32,9 @@
         <div class="nav">
           <div class="menu">
             <p class="title">Main</p>
+            <!-- Tombol Logout -->
+            <a href="{{ url_for('superuser.superuser_logout') }}">Logout</a>
+            <!--  -->
             <ul>
               <li class="active">
                 <a href="#">
@@ -145,6 +148,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="script.js"></script>
-    <script src="{{ url_for('user.static', filename='js/superuser.js') }}"></script>
+    <script src="{{ url_for('superuser.static', filename='js/superuser.js') }}"></script>
   </body>
 </html>
