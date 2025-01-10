@@ -7,7 +7,9 @@ superuser_bp = Blueprint('superuser', __name__, template_folder='templates', sta
 @login_required
 @role_required('superuser') #penentu role
 def dashboardsuper():
-    return render_template("dashboardsuper.html")
+    username = session.get('username')
+    role = session.get('role')
+    return render_template("dashboardsuper.html", username=username, role=role)
 
 @superuser_bp.route('/logout')
 def superuser_logout():
