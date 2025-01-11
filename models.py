@@ -126,3 +126,15 @@ def initialize_superuser():
         print("Superuser sudah ada.")
 
     koneksi.close()
+
+def init_db():
+    with sqlite3.connect(Config.DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                description TEXT
+            )
+        ''')
+        conn.commit()
