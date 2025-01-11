@@ -9,6 +9,7 @@ from apps.qr.qr import qr
 from apps.log.log import log
 from apps.otp.otp import otp_bp
 from apps.sudoku.sudoku import sudoku_bp
+from apps.crud.crud import crud
 
 import models
 
@@ -25,6 +26,7 @@ app.register_blueprint(qr, url_prefix="/qr")
 app.register_blueprint(log, url_prefix="/log")
 app.register_blueprint(otp_bp, url_prefix="/otp")
 app.register_blueprint(sudoku_bp, url_prefix="/sudoku" )
+app.register_blueprint(crud, url_prefix="/crud")
 
 if __name__ == '__main__':
     models.create_tables()
