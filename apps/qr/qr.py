@@ -19,9 +19,11 @@ def barcode():
             QRGenerate = qrcode.make(link)
             
             safe_link = bcrypt.generate_password_hash(link.encode()).decode('utf-8') 
-            qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
+            # Simplify the filename
+            filename = f"{safe_link.replace('/', '_')}.png"
+            qrSave = os.path.join(FolderUploads, filename)
             QRGenerate.save(qrSave)
-            return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
+            return render_template('qr.html', data=filename, countries=countries)
         
         elif 'WANumber' in request.form and 'WAText' in request.form:
             # QR Code For WhatsApp
@@ -33,9 +35,10 @@ def barcode():
             QRGenerate = qrcode.make(WhatsAppURL)
             
             safe_link = bcrypt.generate_password_hash(WhatsAppURL.encode()).decode('utf-8') 
-            qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
+            filename = f"{safe_link.replace('/', '_')}.png"
+            qrSave = os.path.join(FolderUploads, filename)
             QRGenerate.save(qrSave)
-            return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
+            return render_template('qr.html', data=filename, countries=countries)
 
         elif 'GmailAddress' in request.form and 'GmailSubject' in request.form and 'GmailText' in request.form:
             # QR Code For Gmail
@@ -47,9 +50,11 @@ def barcode():
             QRGenerate = qrcode.make(GmailURL)
 
             safe_link = bcrypt.generate_password_hash(GmailURL.encode()).decode('utf-8')
-            qrSave = os.path.join(FolderUploads, f"{safe_link}.png")
+            filename = f"{safe_link.replace('/', '_')}.png"
+            qrSave = os.path.join(FolderUploads, filename)
             QRGenerate.save(qrSave)
-            return render_template('qr.html', data=f"{safe_link}.png", countries=countries)
+            return render_template('qr.html', data=filename, countries=countries)
+    
     return render_template('qr.html', data=None, countries=countries)
 
 @qr.route('/uploads/<path:filename>')
