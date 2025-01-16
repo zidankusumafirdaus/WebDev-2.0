@@ -6,7 +6,7 @@
     <title>CRUD with Flask and SQLite</title>
     <script>
       async function fetchItems() {
-        const response = await fetch("/items");
+        const response = await fetch("/crud/items");
         const items = await response.json();
         const itemList = document.getElementById("item-list");
         itemList.innerHTML = "";
@@ -22,7 +22,7 @@
         const name = document.getElementById("name").value;
         const description = document.getElementById("description").value;
 
-        await fetch("/items", {
+        const response = await fetch("/crud/items", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -30,13 +30,15 @@
           body: JSON.stringify({ name, description }),
         });
 
+        const result = await response.json();
+
         fetchItems();
       }
 
       async function deleteItem() {
         const itemId = document.getElementById("delete-id").value;
 
-        await fetch(`/items/${itemId}`, {
+        await fetch(`/crud/items/${itemId}`, {
           method: "DELETE",
         });
 

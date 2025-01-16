@@ -138,3 +138,11 @@ def init_db():
             )
         ''')
         conn.commit()
+
+def query_db(query, args=(), one=False):
+    with sqlite3.connect(Config.DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(query, args)
+        rv = cursor.fetchall()
+        conn.commit()
+        return (rv[0] if rv else None) if one else rv

@@ -1,25 +1,16 @@
 import sqlite3
 from flask import Flask, request, jsonify, render_template, Blueprint
+from models import query_db
 
-DATABASE = 'instance/UserLog.db'
-crud = Blueprint('crud', __name__, template_folder='templates', static_folder='static')
-
-# Helper function to query the database
-def query_db(query, args=(), one=False):
-    with sqlite3.connect(DATABASE) as conn:
-        cursor = conn.cursor()
-        cursor.execute(query, args)
-        rv = cursor.fetchall()
-        conn.commit()
-        return (rv[0] if rv else None) if one else rv
+crud_bp = Blueprint('crud', __name__, template_folder='templates', static_folder='static')
 
 # Routes
-@crud.route('/')  # Change this to use the blueprint's route
-def crud_index():
+@crud_bp.route('/')
+def home():
     return render_template('index.html')
 
 # Create
-@crud.route('/items', methods=['POST'])
+@crud_bp.route('/items', methods=['POST'])
 def create_item():
     data = request.get_json()
     name = data['name']
@@ -28,13 +19,13 @@ def create_item():
     return jsonify({"name": name, "description": description}), 201
 
 # Read All
-@crud.route('/items', methods=['GET'])
+@crud_bp.route('/items', methods=['GET'])
 def get_items():
     items = query_db('SELECT * FROM items')
     return jsonify([{ "id": row[0], "name": row[1], "description": row[2] } for row in items])
 
 # Read One
-@crud.route('/items/<int:item_id>', methods=['GET'])
+@crud_bp.route('/items/<int:item_id>', methods=['GET'])
 def get_item(item_id):
     item = query_db('SELECT * FROM items WHERE id = ?', (item_id,), one=True)
     if item:
@@ -42,7 +33,7 @@ def get_item(item_id):
     return jsonify({"error": "Item not found"}), 404
 
 # Update
-@crud.route('/items/<int:item_id>', methods=['PUT'])
+@crud_bp.route('/items/<int:item_id>', methods=['PUT'])
 def update_item(item_id):
     data = request.get_json()
     name = data.get('name')
@@ -54,7 +45,7 @@ def update_item(item_id):
     return jsonify({"error": "Item not found"}), 404
 
 # Delete
-@crud.route('/items/<int:item_id>', methods=['DELETE'])
+@crud_bp.route('/items/<int:item_id>', methods=['DELETE'])
 def delete_item(item_id):
     item = query_db('SELECT * FROM items WHERE id = ?', (item_id,), one=True)
     if item:
