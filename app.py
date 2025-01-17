@@ -31,4 +31,5 @@ app.register_blueprint(crud_bp, url_prefix="/crud")
 if __name__ == '__main__':
     models.create_tables()
     models.initialize_superuser()
+    models.init_db()
     app.run(debug=True)
